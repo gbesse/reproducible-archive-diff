@@ -14,6 +14,11 @@ def read(value):
    with zipfile.ZipFile(io.BytesIO(raw))as archive:
     infos=archive.infolist()
     if len(infos)>1000 or sum(i.file_size for i in infos)>20_000_000:raise ValueError('budget')
+    seen=set();duplicates=[]
+    for item in infos:
+     if item.filename in seen:duplicates.append(item.filename)
+     seen.add(item.filename)
+    if duplicates:return hashlib.sha256(raw).hexdigest(),{},sorted(set(duplicates))
     for i in infos:
      mode=i.external_attr>>16;type='directory'if i.is_dir()else'symlink'if stat.S_ISLNK(mode)else'file';content=archive.read(i)
      add(i.filename,content,mode,type,content.decode('utf-8')if type=='symlink'else None,list(i.date_time))

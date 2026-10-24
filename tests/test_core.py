@@ -20,3 +20,11 @@ class Tests(unittest.TestCase):
     i=tarfile.TarInfo('link');i.type=tarfile.SYMTYPE;i.linkname=target;t.addfile(i)
    return {'format':'tar','archive_hex':b.getvalue().hex()}
   self.assertIn('link_target',run({'before':tar('a'),'after':tar('b')})['differences'][0]['fields'])
+
+class DuplicateCentralDirectory(unittest.TestCase):
+ def test_distinct_member_objects_with_same_name_are_detected_before_payload_comparison(self):
+  before=io.BytesIO();after=io.BytesIO()
+  with zipfile.ZipFile(before,'w')as z:z.writestr('x','first');z.writestr('x','second')
+  with zipfile.ZipFile(after,'w')as z:z.writestr('x','first')
+  result=run({'before':{'format':'zip','archive_hex':before.getvalue().hex()},'after':{'format':'zip','archive_hex':after.getvalue().hex()}})
+  self.assertFalse(result['comparable']);self.assertEqual(result['duplicate_names_before'],['x'])
