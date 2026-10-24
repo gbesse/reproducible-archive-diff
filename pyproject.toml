@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reproducible-archive-diff"
+version = "0.1.0a1"
+description = "FR: Comparer le contenu réel de deux builds sans cacher les changements métier | EN: Compare actual build contents without hiding meaningful changes | ES: Comparar contenidos reales de dos compilaciones sin ocultar cambios relevantes"
+requires-python = ">=3.11"
+license = "MIT"
+
+[project.scripts]
+reproducible-archive-diff = "reproducible_archive_diff.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["reproducible_archive_diff*"]

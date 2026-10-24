@@ -1,0 +1,1 @@
+DESCRIPTION = {'fr': 'Comparer le contenu réel de deux builds sans cacher les changements métier', 'en': 'Compare actual build contents without hiding meaningful changes', 'es': 'Comparar contenidos reales de dos compilaciones sin ocultar cambios relevantes'}
